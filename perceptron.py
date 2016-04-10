@@ -18,11 +18,10 @@ class Perceptron:
 
         i = 0
         while i < tamanho_x:
-            x[i].insert(0, 1)
-            x[i] = np.array(x[i])
+            x[i] = self.insert_first_as_one(x[i])
 
             if not is_same_sign(np.dot(self.w, x[i]), y[i]):
-                self.w = self.w + y[i] * x[i]
+                self.chance_w(x[i], y[i])
                 #volta ao inicio da lista de exemplos
                 i = 0
                 break
@@ -36,17 +35,26 @@ class Perceptron:
         self.w = np.random.rand(1, tamanho_w)
         self.w = self.w[0]
 
+    def chance_w(self, xi, yi):
+        self.w = self.w + (yi * xi)
+
 
     def predict(self, x):
         resposta = []
 
         for xi in x:
-            if np.dot(self.w, xi) > 0:
+            xi = self.insert_first_as_one(xi)
+            if np.dot(self.w, xi) >= 0:
                 resposta.append(1)
             else:
                 resposta.append(-1)
 
+        return resposta
 
+    def insert_first_as_one(self, xi):
+        xi.insert(0, 1)
+        xi = np.array(xi)
+        return xi
 
 def is_same_sign(value_1, value_2):
     #verifica se as duas entradas tem o mesmo sinal
