@@ -12,8 +12,6 @@ class Perceptron:
         #quantidade de exemplos
         tamanho_x = len(x)
 
-        tamanho_w = len(x[0]) + 1
-
         self.create_random_w(len(x[0]))
 
         i = 0
