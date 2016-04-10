@@ -24,7 +24,7 @@ class Perceptron:
             x[i].insert(0, 1)
             x[i] = np.array(x[i])
 
-            if np.dot(self.w, x[i]) != y[i]:
+            if not is_same_sign(np.dot(self.w, x[i]), y[i]):
                 self.w = self.w + y[i] * x[i]
                 #volta ao inicio da lista de exemplos
                 i = 0
@@ -39,3 +39,8 @@ class Perceptron:
                 resposta.append(1)
             else:
                 resposta.append(-1)
+
+
+def is_same_sign(value_1, value_2):
+    #verifica se as duas entradas tem o mesmo sinal
+    return (value_1 < 0) == (value_2 < 0)
