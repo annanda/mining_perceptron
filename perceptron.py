@@ -32,4 +32,10 @@ class Perceptron:
             i += 1
 
     def predict(self, x):
-        pass
+        resposta = []
+
+        for xi in x:
+            if np.dot(self.w, xi) > 0:
+                resposta.append(1)
+            else:
+                resposta.append(-1)
