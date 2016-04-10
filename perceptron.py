@@ -9,7 +9,7 @@ class Perceptron:
     w = None
 
     def fit(self, x, y):
-        #quantidade de exemplos
+        # quantidade de exemplos
         tamanho_x = len(x)
 
         self.create_random_w(len(x[0]))
@@ -20,22 +20,21 @@ class Perceptron:
 
             if not is_same_sign(np.dot(self.w, x[i]), y[i]):
                 self.chance_w(x[i], y[i])
-                #volta ao inicio da lista de exemplos
+                # volta ao inicio da lista de exemplos
                 i = 0
                 break
             i += 1
 
     def create_random_w(self, tamanho_xi):
-        #dimensao de cada exemplo depois que adiciono o 1 na frente
+        # dimensao de cada exemplo depois que adiciono o 1 na frente
         tamanho_w = tamanho_xi + 1
 
-        #contruindo o w aleatoriamente
+        # contruindo o w aleatoriamente
         self.w = np.random.rand(1, tamanho_w)
         self.w = self.w[0]
 
     def chance_w(self, xi, yi):
         self.w = self.w + (yi * xi)
-
 
     def predict(self, x):
         resposta = []
@@ -54,6 +53,7 @@ class Perceptron:
         xi = np.array(xi)
         return xi
 
+
 def is_same_sign(value_1, value_2):
-    #verifica se as duas entradas tem o mesmo sinal
+    # verifica se as duas entradas tem o mesmo sinal
     return (value_1 < 0) == (value_2 < 0)
