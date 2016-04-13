@@ -4,7 +4,7 @@ import random
 
 class Delta:
     """
-    Implementa o
+    Implementa o Perceptron utilizando o Delta como forma de calcular o erro
     """
 
     w = None
@@ -18,8 +18,6 @@ class Delta:
         # quantidade de exemplos
         tamanho_x = len(x)
 
-        x[i] = np.array(x[i])
-
         self.create_random_w(len(x[0]))
 
         variacao_erro = 100000
@@ -30,6 +28,7 @@ class Delta:
             i = 0
             erro_total = 0
             while i < tamanho_x:
+                x[i] = np.array(x[i])
                 i+= 1
                 net = self.calcula_net(x[i])
                 y_estimado = self.aplica_funcao_ativacao(net)
