@@ -38,12 +38,12 @@ class Perceptron:
             erro_total = 0
             while i < tamanho_x:
                 self.x[i] = np.array(self.x[i])
-                i+= 1
                 net = self.calcula_net(self.x[i])
                 y_estimado = self.aplica_funcao_ativacao(net)
                 erro = self.calcula_erro(y_estimado, self.y[i])
                 erro_total+= abs(erro)
                 self.ajusta_w(self.x[i], erro)
+                i += 1
                 variacao_erro = abs(erro_anterior - erro_total)
 
     def create_random_w(self, tamanho_xi):
@@ -53,13 +53,14 @@ class Perceptron:
         # contruindo o w aleatoriamente
         self.w = np.random.rand(1, tamanho_w)
         self.w = self.w[0]
-        self.bias = random.uniform(0, 1)
+        self.bias = np.random.rand(1, 1)
+        self.bias = self.bias[0]
 
     def ajusta_w(self, xi, erro,):
         self.w += self.learning_rate * erro * xi
 
     def calcula_erro(self, y_estimado, y):
-        return y - y_estimado
+        return float(y) - y_estimado
 
     def calcula_net(self, xi):
         return np.dot(self.w, xi) + self.bias
@@ -89,9 +90,9 @@ class Perceptron:
 
             for row in exemples:
                 xi = []
-                xi.append(row[0])
-                xi.append(row[1])
-                xi.append(row[2])
+                xi.append(float(row[0]))
+                xi.append(float(row[1]))
+                xi.append(float(row[2]))
                 self.y.append(row[3])
                 self.x.append(xi)
 
