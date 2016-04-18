@@ -1,5 +1,6 @@
 import numpy as np
 import random
+import csv
 
 
 class Perceptron:
@@ -10,31 +11,35 @@ class Perceptron:
     w = None
     tolerancia = None
     bias = None
+    learning_rate = None
+    csv_train_path = None
+    x = []
+    y = []
 
-    def __init__(self):
-        pass
+    def __init__(self, csv_train_path):
+        self.csv_train_path = csv_train_path
 
-    def fit(self, x, y):
+    def fit(self):
         # quantidade de exemplos
-        tamanho_x = len(x)
+        tamanho_x = len(self.x)
 
-        self.create_random_w(len(x[0]))
+        self.create_random_w(len(self.x[0]))
 
         variacao_erro = 100000
         erro_anterior = 100000
-        learning_rate = 0.01
+        self.learning_rate = 0.01
 
         while variacao_erro > self.tolerancia:
             i = 0
             erro_total = 0
             while i < tamanho_x:
-                x[i] = np.array(x[i])
+                self.x[i] = np.array(self.x[i])
                 i+= 1
-                net = self.calcula_net(x[i])
+                net = self.calcula_net(self.x[i])
                 y_estimado = self.aplica_funcao_ativacao(net)
-                erro = self.calcula_erro(y_estimado, y[i])
+                erro = self.calcula_erro(y_estimado, self.y[i])
                 erro_total+= abs(erro)
-                self.ajusta_w(x[i], learning_rate, erro)
+                self.ajusta_w(self.x[i], erro)
                 variacao_erro = abs(erro_anterior - erro_total)
 
     def create_random_w(self, tamanho_xi):
@@ -46,8 +51,8 @@ class Perceptron:
         self.w = self.w[0]
         self.bias = random.uniform(0, 1)
 
-    def ajusta_w(self, xi, learning_rate, erro,):
-        self.w += learning_rate * erro * xi
+    def ajusta_w(self, xi, erro,):
+        self.w += self.learning_rate * erro * xi
 
     def calcula_erro(self, y_estimado, y):
         return y - y_estimado
@@ -56,7 +61,7 @@ class Perceptron:
         return np.dot(self.w, xi) + self.bias
 
     def aplica_funcao_ativacao(self, net):
-        return 1/(1 + np.e** -net)
+        return 1/(1 + np.e ** -net)
 
     def predict(self, x):
         resposta = []
@@ -68,3 +73,21 @@ class Perceptron:
                 resposta.append(0)
 
         return resposta
+
+    def read_csv(self):
+        """
+        Transforma os dados de um arquivo CSV na lista de exemplos x (com 3 features cada exemplo)
+        e na lista y que diz qual a classe o exemplo pertence
+        So funciona com exemplos que tem 3 features
+        """
+        with open(self.csv_train_path, 'r') as csv_file:
+            exemples = csv.reader(csv_file, delimiter=';')
+
+            for row in exemples:
+                xi = []
+                xi.append(row[0])
+                xi.append(row[1])
+                xi.append(row[2])
+                self.y.append(row[3])
+                self.x.append(xi)
+
