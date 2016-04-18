@@ -17,6 +17,9 @@ class Perceptron:
     y = []
 
     def __init__(self, csv_train_path):
+        """
+        csv_train_path indica o caminho onde o arquivo CSV está
+        """
         self.csv_train_path = csv_train_path
 
     def fit(self):
@@ -28,6 +31,7 @@ class Perceptron:
         variacao_erro = 100000
         erro_anterior = 100000
         self.learning_rate = 0.01
+        self.tolerancia = 40
 
         while variacao_erro > self.tolerancia:
             i = 0
