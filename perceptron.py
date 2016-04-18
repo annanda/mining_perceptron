@@ -21,6 +21,8 @@ class Perceptron:
         csv_train_path indica o caminho onde o arquivo CSV está
         """
         self.csv_train_path = csv_train_path
+        self.read_csv()
+        self.fit()
 
     def fit(self):
         # quantidade de exemplos
