@@ -2,12 +2,12 @@
 
 Para rodar:
 
-## Instancie a classe Perceptron, passando como parâmetro o caminho do arquivo CSV que contém os exemplos de treinamento: 
+#### Instancie a classe Perceptron, passando como parâmetro o caminho do arquivo CSV que contém os exemplos de treinamento: 
 ```python
 p = Perceptron('/home/annanda/exemplos.csv')
 ```
 
-## Chame o método predict passando como parâmetro a lista de pontos cuja classe é desconhecida: 
+#### Chame o método predict passando como parâmetro a lista de pontos cuja classe é desconhecida: 
 ```python
 p.predict(x)
 ```
