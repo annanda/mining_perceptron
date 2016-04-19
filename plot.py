@@ -3,7 +3,7 @@ import mpl_toolkits.mplot3d.axes3d as p3
 import numpy as np
 
 def plot(w, w0):
-    arquivo = open('test.csv','r')
+    arquivo = open('dataset.csv','r')
     X = []
     for line in arquivo:
         vec = line.split(';')
