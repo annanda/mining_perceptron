@@ -45,16 +45,10 @@ class Perceptron:
                 erro = self.calcula_erro(y_estimado, self.y[i])
                 erro_total+= abs(erro)
                 self.ajusta_w(self.x[i], erro)
-                print("Iteração nos exemplos")
-                print(i)
-                print(self.w)
                 i += 1
 
             variacao_erro = abs(erro_anterior - erro_total)
             erro_anterior = erro_total
-            print("Erro anterior", erro_anterior)
-            print("Erro total", erro_total)
-            print("Variação de erro", variacao_erro)
 
     def create_random_w(self, tamanho_xi):
         # dimensao de cada exemplo
