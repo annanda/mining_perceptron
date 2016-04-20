@@ -32,9 +32,10 @@ class Perceptron:
 
         variacao_erro = 100000
         erro_anterior = 100000
-        self.learning_rate = 0.01
-        self.tolerancia = 3
+        self.learning_rate = 0.9
+        self.tolerancia = 0.01
 
+        iteracoes = 0
         while variacao_erro > self.tolerancia:
             i = 0
             erro_total = 0
@@ -50,11 +51,14 @@ class Perceptron:
                 print(self.w)
                 i += 1
 
+            print("Variação de erro antes ", variacao_erro)
             variacao_erro = abs(erro_anterior - erro_total)
-            erro_anterior = erro_total
+            print("Variação de erro depois ", variacao_erro)
             print("Erro anterior", erro_anterior)
             print("Erro total", erro_total)
-            print("Variação de erro", variacao_erro)
+            erro_anterior = erro_total
+            iteracoes += 1
+            print("Iterações:", iteracoes)
 
     def create_random_w(self, tamanho_xi):
         # dimensao de cada exemplo
@@ -68,6 +72,7 @@ class Perceptron:
 
     def ajusta_w(self, xi, erro,):
         self.w += self.learning_rate * erro * xi
+        self.w0 += self.learning_rate * erro
 
     def calcula_erro(self, y_estimado, y):
         return float(y) - y_estimado
@@ -106,3 +111,7 @@ class Perceptron:
                 self.y.append(row[3])
                 self.x.append(xi)
 
+
+p = Perceptron('/home/annanda/Documentos/mineracao/dataset.csv')
+print(p.w)
+print(p.w0)
