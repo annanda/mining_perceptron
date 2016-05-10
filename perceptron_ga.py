@@ -1,24 +1,27 @@
 import numpy as np
 import random
+import csv
 
 
 class PerceptronGA:
 
+    w = None
+    w0 = None
+    x = []
+    y = []
+    number_of_features = None
+
     def __init__(self,
-                 population_size = 5,
-                 number_of_generations = 10,
-                 mutation_chance = 0.1,
-                 crossover_chance = 0.8,
-                 number_of_features = 3
+                 population_size=5,
+                 number_of_generations=10,
+                 mutation_chance=0.1,
+                 crossover_chance=0.8
                  ):
-        self.w = None
-        self.w0 = None
-        self.population_size =population_size
+
+        self.population_size = population_size
         self.number_of_generations = number_of_generations
         self.crossover_chance = crossover_chance
         self.mutation_chance = mutation_chance
-
-        self.number_of_features = number_of_features
 
     def sort_by_best(self, population, x, y):
         pop_with_fit = [(ind, self.fitness_function(ind, x, y)) for ind in population]
@@ -115,3 +118,21 @@ class PerceptronGA:
 
     def aplica_funcao_ativacao(self, net):
         return 1/(1 + np.e ** -net)
+
+    def read_csv(self):
+        """
+        Transforma os dados de um arquivo CSV na lista de exemplos x (com 3 features cada exemplo)
+        e na lista y que diz qual a classe o exemplo pertence
+        So funciona com exemplos que tem 3 features
+        """
+        with open(self.csv_train_path, 'r') as csv_file:
+            exemples = csv.reader(csv_file, delimiter=';')
+
+            for row in exemples:
+                xi = []
+                xi.append(float(row[0]))
+                xi.append(float(row[1]))
+                xi.append(float(row[2]))
+                self.y.append(row[3])
+                self.x.append(xi)
+        self.number_of_features = len(self.x[0])
