@@ -4,8 +4,8 @@ import numpy as np
 
 
 def plot(w, w0):
-    arquivo = open('dataset.csv', 'r')
-    # arquivo = open('test.csv', 'r')
+    # arquivo = open('dataset.csv', 'r')
+    arquivo = open('test.csv', 'r')
     X = []
     for line in arquivo:
         vec = line.split(';')
@@ -39,8 +39,8 @@ def plot(w, w0):
     xx, yy = np.meshgrid(range(-10,10), range(-10,10))
     z = (-plano[0][0] * xx - plano[0][1] * yy - plano[1]) * 1. / plano[0][2]
     ax.plot_surface(xx, yy, z, alpha=0.5, color='green')
-    plt.savefig("imagem_ga_p_200_g_1000_dataset.png")
+    plt.savefig("images/imagem_ga_p_200_g_1500_test.png")
     plt.show()
 
-plot([0., 0.3140456, 0.99699966],  0.622833369694)
+plot([0.00302997, 0.5208645, 0.97579905],  0.0)
 

@@ -14,8 +14,8 @@ class PerceptronGA:
     def __init__(self,
                  csv_train_path,
                  population_size=200,
-                 number_of_generations=1500,
-                 mutation_chance=0.1,
+                 number_of_generations=500,
+                 mutation_chance=0.3,
                  crossover_chance=0.8,
                  ):
         self.csv_train_path = csv_train_path
