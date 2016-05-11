@@ -13,8 +13,8 @@ class PerceptronGA:
 
     def __init__(self,
                  csv_train_path,
-                 population_size=5,
-                 number_of_generations=10,
+                 population_size=200,
+                 number_of_generations=1500,
                  mutation_chance=0.1,
                  crossover_chance=0.8,
                  ):
@@ -34,11 +34,17 @@ class PerceptronGA:
             population = self.select(population)
             population = self.crossover(population)
             population = self.mutate(population)
+            print("geração:",generation)
+            sorted_population, fits = self.sort_by_best(population)
+            best_individual = sorted_population[-1]
+            self.w0 = best_individual[0]
+            self.w = best_individual[1:]
+            erro_total = len(self.x) - fits[-1]
+            print("w =", self.w)
+            print("w0 =", self.w0)
+            print("Erro total", erro_total)
+            # print('------------------------')
 
-        sorted_population, fits = self.sort_by_best(population)
-        best_individual = sorted_population[-1]
-        self.w0 = best_individual[0]
-        self.w = best_individual[1:]
 
     def sort_by_best(self, population):
         population_with_fit = []
@@ -159,5 +165,5 @@ class PerceptronGA:
         self.number_of_features = len(self.x[0])
 
 p = PerceptronGA('/home/annanda/Documentos/mineracao/dataset.csv')
-print(p.w)
-print(p.w0)
+# print("w =", p.w)
+# print("w0 =", p.w0)
