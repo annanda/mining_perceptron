@@ -35,28 +35,31 @@ class PerceptronGA:
             population = self.crossover(population)
             population = self.mutate(population)
 
-            sorted_population = self.sort_by_best(population)
-            best_individual = sorted_population[0]
-            self.w0 = best_individual[0]
-            self.w = best_individual[1:]
+        sorted_population, fits = self.sort_by_best(population)
+        best_individual = sorted_population[-1]
+        self.w0 = best_individual[0]
+        self.w = best_individual[1:]
 
     def sort_by_best(self, population):
         population_with_fit = []
 
         # cria uma lista de tuplas (individuo, valor_fit) para toda a populacao
         for individual in population:
-            population_with_fit.append((individual, self.fitness_function(individual, self.x, self.y)))
+            population_with_fit.append((individual, self.fitness_function(individual)))
+
 
         sorted_population = sorted(population_with_fit, key=lambda individual_fit: individual_fit[1])
 
+
         # separa as tuplas anteriores em duas duplas
-        z = zip(*sorted_population)
+        population_new, fits = zip(*sorted_population)
         # list de individuos e lista de suas fits
-        return next(z), next(z)
+        population_new = list(population_new)
+        fits = list(fits)
+        return population_new, fits
 
     def select(self, population):
         sorted_population, fits = self.sort_by_best(population)
-
         total = 0
         for i in range(len(sorted_population)):
             total += fits[i]
@@ -64,9 +67,10 @@ class PerceptronGA:
 
         selected = []
         for i in range(len(sorted_population)):
-            n = random.uniform(1, total)
+            aleatorio = random.uniform(1, total)
             for j in range(len(fits)):
-                if n <= fits[j]:
+                # import pdb; pdb.set_trace()
+                if aleatorio <= fits[j]:
                     selected.append(sorted_population[j])
                     break
 
@@ -86,16 +90,19 @@ class PerceptronGA:
 
             point = random.choice(range(1, len(ind1)))
 
-            population[i] = ind1[0:point] + ind2[point:]
-            population[i+1] = ind2[0:point] + ind1[point:]
+            population[i] = np.append(ind1[0:point], ind2[point:])
+            population[i+1] = np.append(ind2[0:point], ind1[point:])
 
+        for var in range(5):
+            if len(population[var]) != 4:
+                pass
         return population
 
     def mutate(self, population):
         for i in range(len(population)):
             individual = population[i]
             if random.random() > self.mutation_chance: # mutation chance
-                return individual
+                return population
             mutation_position = random.choice(range(len(individual)))
             auxiliar_list = list(range(len(individual)))
             auxiliar_list.reverse()
@@ -107,8 +114,9 @@ class PerceptronGA:
     def fitness_function(self, individual):
         erro_total = 0
         for i, example in enumerate(self.x):
-            y_estimado = self.evaluate(individual, example)
-            erro = abs(self.calcula_erro(y_estimado, self.y[i]))
+            net = self.calcula_net(individual, example)
+            y_estimado = self.aplica_funcao_ativacao(net)
+            erro = self.calcula_erro(y_estimado, self.y[i])
             erro_total += erro
 
         max_error = len(self.x) # o erro maximo por exemplo é 1
@@ -122,14 +130,12 @@ class PerceptronGA:
 
         return population
 
-    def evaluate(self, individual, example):
-        return self.aplica_funcao_ativacao(self.calcula_net(individual, example))
-
     def calcula_erro(self, y_estimado, y):
         return abs(float(y) - y_estimado)
 
     def calcula_net(self, individual, example):
-        return np.dot(individual[1:], example) + individual[0]
+        net = np.dot(individual[1:], example) + individual[0]
+        return net
 
     def aplica_funcao_ativacao(self, net):
         return 1/(1 + np.e ** -net)

@@ -31,7 +31,7 @@ class Perceptron:
 
         variacao_erro = 100000
         erro_anterior = 100000
-        self.learning_rate = 0.9
+        self.learning_rate = 0.1
         self.tolerancia = 0.01
 
         iteracoes = 0
